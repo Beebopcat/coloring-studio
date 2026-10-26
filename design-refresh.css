@@ -1,0 +1,17 @@
+/* Reviewed artwork; original event handlers, states and picture content remain intact. */
+.studio-design-icon{display:inline-block;width:1.2em;height:1.2em;vertical-align:-.2em;flex:none;fill:none;--icon-fill:#adbfac;--icon-accent:#b39a63;pointer-events:none}
+#color-dialog .brush-tools .studio-design-icon{width:20px;height:20px}
+#color-dialog .palette button[aria-pressed=true]:after{content:"";display:inline-block;width:16px;height:16px;background:var(--check,#fff);mask:url("assets/design-icons/check.svg") center/contain no-repeat;-webkit-mask:url("assets/design-icons/check.svg") center/contain no-repeat}
+.studio-home h1{font-size:clamp(30.8px,5.5vw,52.8px)}
+@media screen{
+ #color-dialog h2{font-size:17.6px}
+ #color-dialog .drawing-title-wrap h3{font-size:13.2px}
+ #color-dialog .paint-options-panel h3{font-size:14.3px}
+ #color-dialog .picture-library h3{font-size:24.2px}
+}
+.studio-tour h2{font-size:25.3px}
+@media screen and (max-width:600px),screen and (pointer:coarse){
+ #color-dialog h2{font-size:15.4px}
+ #color-dialog .drawing-title-wrap h3{font-size:12.1px}
+}
+@media(max-width:520px){.studio-tour h2{font-size:23.1px}}

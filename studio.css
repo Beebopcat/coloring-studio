@@ -1,0 +1,115 @@
+:root{color-scheme:light;--ink:#49394f;--muted:#857583;--line:#d4bd9b}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#fbf3df;color:var(--ink);font-family:'Trebuchet MS',Arial,sans-serif}button{font:inherit;cursor:pointer;color:inherit;background:#fff9ec;border:1px solid #c3ac85;border-radius:8px;min-height:44px;padding:8px 14px}button:focus-visible{outline:3px solid #396d9d;outline-offset:3px}.studio-home{min-height:100dvh;display:flex;align-items:center;justify-content:center;gap:28px;padding:24px}.studio-home>img{width:min(44vw,560px);border:8px solid #ead4b4;border-radius:12px}.studio-home>div{max-width:400px}.studio-home h1{font-size:clamp(28px,5vw,48px);margin:8px 0 15px}.eyebrow{font-size:10px;letter-spacing:.14em}.small{font-size:12px;line-height:1.6}.studio-home p{line-height:1.65}.studio-help{padding:5px 12px!important}#color-dialog{background:#fff9ed!important;color:#49394f!important;border-color:#d8c09e!important}.studio-tour{color:#49394f!important;background:#fff9ed!important;border-color:#d4bd9b!important}.studio-tour button{color:#49394f!important;background:#f1e2c7!important}.tour-highlight{outline-color:#547ca8!important}@media(max-width:600px){.studio-home{flex-direction:column;gap:14px}.studio-home>img{width:min(86vw,480px)}}
+
+/* Short desktop windows reserve their height for the full-width sheet. The
+   secondary controls stay on single, horizontally scrollable rows. */
+@media screen and (max-height:650px) and (min-width:601px){
+ #color-dialog{color-scheme:light}
+ #color-dialog .dialog-heading{padding:3px 8px;gap:6px;min-height:36px}
+ #color-dialog .dialog-heading .eyebrow{display:none}
+ #color-dialog h2{font-size:18px;line-height:1.15;margin:0}
+ #color-dialog button{min-height:30px;font-size:11px;padding:3px 7px}
+ #color-dialog .studio-header-actions>[data-close]{width:30px;height:30px;min-height:30px;padding:0}
+ #color-dialog #library-toggle{padding:3px 7px;font-size:11px}
+ #color-dialog .painting-desk{padding:3px 6px 1px}
+ #color-dialog .drawing-nav{min-height:30px;height:30px;flex-shrink:0;margin-bottom:2px;gap:6px}
+ #color-dialog .drawing-title-wrap .eyebrow{display:none}
+ #color-dialog .drawing-title-wrap h3{font-size:13px;line-height:1.2;margin:0}
+ #color-dialog .page-arrows button{width:30px;height:30px;min-height:30px;padding:0}
+ #color-dialog .paint-frame{min-height:0}
+ #color-dialog .brush-tools{grid-template-columns:repeat(6,minmax(0,82px));padding:2px 5px;gap:4px;flex-shrink:0}
+ #color-dialog .brush-tools button{min-height:30px;height:30px;padding:2px 5px;font-size:11px;gap:4px}
+ #color-dialog .brush-tools svg{width:18px;height:18px}
+ #color-dialog .paint-viewport{min-height:0;flex:1 1 0;overflow:auto;padding:2px;scrollbar-width:thin}
+ #color-dialog .paint-box{grid-template-columns:84px minmax(0,1fr) 28px;padding:2px 5px;gap:5px;flex-shrink:0}
+ #color-dialog .selected-paint{padding:0;gap:4px}
+ #color-dialog #selected-swatch{width:23px;height:23px;flex-shrink:0}
+ #color-dialog #selected-color{max-width:54px;font-size:10px}
+ #color-dialog #selected-hex,#color-dialog .selected-paint small{display:none}
+ #color-dialog .palette{grid-template-rows:24px;grid-auto-columns:24px;gap:4px;padding:2px 3px 4px;overflow-x:auto;scrollbar-width:thin}
+ #color-dialog .palette button{width:24px;height:24px;min-width:24px;min-height:24px;padding:0}
+ #color-dialog .palette button[aria-pressed=true]:after{font-size:14px}
+ #color-dialog .custom-paint{font-size:8px}
+ #color-dialog #custom-paint{width:25px;height:24px;padding:1px}
+ #color-dialog .paint-actions{flex-wrap:nowrap;flex-shrink:0;min-height:34px;gap:5px;padding:2px 5px;overflow-x:auto;scrollbar-width:thin}
+ #color-dialog .paint-actions>*{flex-shrink:0}
+ #color-dialog .paint-actions button{min-height:30px;height:30px;font-size:10px;padding:3px 6px;white-space:nowrap}
+ #color-dialog .tool-settings{flex-basis:auto;justify-content:flex-start;border:0;padding:0;gap:4px}
+ #color-dialog .size-title{min-width:0;max-width:none;font-size:10px}
+ #color-dialog #size-name,#color-dialog .size-options button span{display:none}
+ #color-dialog .size-options{gap:3px}
+ #color-dialog .size-options button{width:26px;padding:2px;min-height:30px}
+ #color-dialog .size-options i{display:block;max-width:17px;max-height:17px}
+ #color-dialog #brush-size{width:56px}
+ #color-dialog .history-tools,#color-dialog .zoom-tools,#color-dialog .keep-tools{gap:3px}
+ #color-dialog .zoom-tools button{width:25px;min-height:30px}
+ #color-dialog #zoom-fit{width:30px}
+ #color-dialog #zoom-label{font-size:9px}
+ #color-dialog .action-spacer{display:none}
+ #color-dialog .keep-tools{margin-left:auto}
+ #color-dialog .painting-status{min-height:15px;max-height:15px;padding:1px 2px;gap:5px;flex-shrink:0}
+ #color-dialog .paint-tip,#color-dialog #painting-save{font-size:10px;line-height:12px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+
+/* On narrow screens, keep touch targets large even when the window is short.
+   Swatches form one scrollable row rather than consuming several rows. */
+@media screen and (max-width:600px){
+ #color-dialog{color-scheme:light}
+ #color-dialog button,#color-dialog .paint-actions button,#color-dialog .size-options button{min-height:44px;min-width:44px}
+ #color-dialog .studio-header-actions>[data-close],#color-dialog .page-arrows button,#color-dialog #close-library{width:44px;height:44px;min-height:44px}
+ #color-dialog .brush-tools{grid-template-columns:repeat(6,minmax(44px,1fr));padding:3px;gap:3px;overflow-x:auto}
+ #color-dialog .brush-tools button{min-height:44px;font-size:10px}
+ #color-dialog .paint-box{grid-template-columns:66px minmax(0,1fr) 46px;gap:3px;padding:3px}
+ #color-dialog .selected-paint{padding-bottom:0}
+ #color-dialog .selected-paint small,#color-dialog #selected-hex{display:none}
+ #color-dialog .palette{grid-template-rows:44px;grid-auto-columns:44px;padding:2px 3px 4px;gap:4px;overflow-x:auto;scrollbar-width:thin}
+ #color-dialog .palette button{width:44px;height:44px;min-width:44px;min-height:44px}
+ #color-dialog #custom-paint{width:44px;height:44px}
+ #color-dialog .zoom-tools button,#color-dialog #zoom-fit{width:44px}
+ #color-dialog .paint-actions{padding:3px;gap:3px}
+ #color-dialog .paint-viewport{min-height:90px;scrollbar-width:thin}
+}
+
+/* Phone painting remains the main surface. Keep labeled 44px controls in
+   scrollable frame rows instead of stacking size, history and save controls. */
+@media screen and (max-width:600px){
+ #color-dialog{width:100vw;height:100dvh;max-height:100dvh;border-radius:6px}
+ #color-dialog .dialog-heading{min-height:48px;height:48px;padding:2px 5px;gap:5px}
+ #color-dialog .dialog-heading>div:first-child{min-width:0;flex:1}
+ #color-dialog .dialog-heading .eyebrow{display:none}
+ #color-dialog h2{font-size:16px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #color-dialog .studio-header-actions{gap:3px;flex:none}
+ #color-dialog .studio-help{width:62px;min-width:44px;padding:2px 5px!important;font-size:10px;line-height:1.2;white-space:normal}
+ #color-dialog #library-toggle{min-height:44px;padding:2px 5px;font-size:11px}
+ #color-dialog #library-toggle span{font-size:9px;margin-left:2px}
+ #color-dialog .painting-desk{padding:2px 3px 1px}
+ #color-dialog .drawing-nav{height:44px;min-height:44px;margin:0 0 2px;gap:5px}
+ #color-dialog .drawing-title-wrap{min-width:0;flex:1}
+ #color-dialog .drawing-title-wrap h3{font-size:12px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #color-dialog .page-arrows{gap:2px}
+ #color-dialog #page-number{font-size:9px}
+ #color-dialog .paint-frame{min-height:0;border-width:2px}
+ #color-dialog .brush-tools{padding:2px 3px;gap:3px;flex-shrink:0}
+ #color-dialog .brush-tools button{height:44px;min-height:44px;font-size:10px;gap:1px}
+ #color-dialog .brush-tools svg{width:19px;height:19px}
+ #color-dialog .paint-viewport{min-height:0;flex:1 1 0;overflow:auto;padding:2px}
+ #color-dialog .paint-box{padding:2px 3px;gap:3px;flex-shrink:0}
+ #color-dialog .palette{grid-template-rows:44px;grid-auto-columns:44px;padding:2px 3px 4px;gap:4px;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}
+ #color-dialog .paint-actions{flex-wrap:nowrap;min-height:50px;padding:2px 3px;gap:4px;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;flex-shrink:0}
+ #color-dialog .paint-actions>*{flex-shrink:0}
+ #color-dialog .paint-actions button{min-height:44px;height:44px;min-width:44px;font-size:10px;white-space:nowrap;padding:3px 6px}
+ #color-dialog .tool-settings{flex-basis:auto;justify-content:flex-start;border:0;padding:0;gap:4px}
+ #color-dialog .size-title{font-size:10px;min-width:28px;max-width:48px}
+ #color-dialog #size-name{font-size:9px}
+ #color-dialog .size-options{gap:3px}
+ #color-dialog .size-options button{width:44px;padding:3px}
+ #color-dialog .size-options i{display:block;max-width:19px;max-height:19px}
+ #color-dialog .history-tools,#color-dialog .zoom-tools,#color-dialog .keep-tools{gap:3px;flex:none}
+ #color-dialog .keep-tools{margin-left:0}
+ #color-dialog .paint-actions>#show-inspiration{order:-1;font-size:10px}
+ #color-dialog .action-spacer{display:none}
+ #color-dialog .painting-status{height:18px;min-height:18px;max-height:18px;padding:1px 2px;overflow:hidden}
+ #color-dialog .paint-tip,#color-dialog #painting-save{font-size:9px;line-height:14px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #color-dialog .paint-tip{min-width:0}
+ #color-dialog #painting-save{max-width:92px;flex:none}
+}
+

@@ -1,0 +1,219 @@
+/* Standalone child painting frame. Full-width responsive layout retained. */
+#color-dialog{--ink:#49394f;--muted:#857583;--paper:#fff8e9;--frame:#ead4b4;--line:#d4bd9b;box-sizing:border-box;width:99vw;height:98dvh;max-width:none;max-height:98dvh;padding:0;margin:auto;border:2px solid #d8c09e;border-radius:14px;background:var(--paper);color:var(--ink);font-family:'Segoe UI',Arial,sans-serif;overflow:hidden;box-shadow:0 20px 80px #1a0c2966}
+#color-dialog[open]{display:flex;flex-direction:column}
+#color-dialog *{box-sizing:border-box}
+#color-dialog [hidden]{display:none!important}
+#color-dialog button{font:600 12px/1.2 'Segoe UI',Arial,sans-serif;color:var(--ink);border:1px solid var(--line);border-radius:8px;background:#fff9ec;box-shadow:0 2px 0 #bda27e30;padding:6px 9px;min-height:30px;transition:background .12s}
+#color-dialog button:hover:not(:disabled){background:#fff2d2;border-color:#a89069;transform:none}
+#color-dialog button:disabled{opacity:.35;cursor:default}
+#color-dialog button:focus-visible,#color-dialog input:focus-visible,#paint-canvas:focus-visible{outline:3px solid #82609d;outline-offset:2px}
+#color-dialog .dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:none;padding:9px 14px;margin:0;background:#f3e6d2;border-bottom:1px solid #d9c3a2}
+#color-dialog .eyebrow{font-size:8px;letter-spacing:1.4px;color:#987354;line-height:1.2;margin:0 0 3px}
+#color-dialog h2{font:700 21px/1.15 'Segoe UI',sans-serif;letter-spacing:-.4px;margin:0}
+.studio-header-actions{display:flex;align-items:center;gap:7px}
+#color-dialog #library-toggle{font-size:12px;padding:8px 12px}
+#library-toggle span{font-size:10px;color:#a17b59;margin-left:4px}
+#color-dialog .studio-header-actions>[data-close]{width:36px;height:36px;padding:0;font-size:24px}
+#color-dialog .studio-workspace{position:relative;display:flex;flex:1;min-height:0;overflow:hidden}
+#color-dialog .painting-desk{display:flex;flex-direction:column;flex:1;min-height:0;min-width:0;padding:7px 10px 4px}
+#color-dialog .drawing-nav{display:flex;align-items:center;justify-content:space-between;flex:none;gap:10px;margin:0 2px 6px;min-height:31px}
+.drawing-title-wrap{min-width:0;display:flex;align-items:baseline;gap:8px}
+#color-dialog .drawing-title-wrap .eyebrow{flex:none;font-size:8px;margin:0}
+#color-dialog .drawing-title-wrap h3{font:650 14px/1.3 'Segoe UI',sans-serif;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0}
+.page-arrows{display:flex;align-items:center;gap:6px;flex:none}
+#color-dialog .page-arrows button{min-height:29px;width:30px;padding:3px}
+#page-number{font-size:10px;white-space:nowrap;color:var(--muted)}
+.paint-frame{display:flex;flex-direction:column;flex:1;min-height:0;border:3px solid #d5b995;border-radius:12px;overflow:hidden;background:#ead6b7;box-shadow:inset 0 0 0 1px #fff7df,0 3px 12px #7b634a18}
+.brush-tools{display:grid;grid-template-columns:repeat(6,minmax(0,90px));justify-content:center;align-items:stretch;gap:5px;flex:none;padding:5px 9px;background:linear-gradient(#f4e5cd,#ead8b8);border-bottom:1px solid #c9ad87}
+#color-dialog .brush-tools button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:38px;padding:4px 7px;font-size:11px;background:#fff7e6;border:1px solid #cdb18b;box-shadow:inset 0 1px #fff;white-space:nowrap}
+.brush-tools svg{display:block;width:23px;height:23px;stroke:currentColor;stroke-width:1.7;fill:none;flex:none}
+#color-dialog .brush-tools button[aria-pressed=true]{color:#fff4dd;background:#67516e;border-color:#5c4564;box-shadow:inset 0 1px #8d7297}
+#color-dialog .paint-viewport{position:relative;display:flex;align-items:safe center;justify-content:safe center;flex:1;min-height:100px;overflow:auto;overscroll-behavior:contain;padding:3px;background:#dbd4c8;border:0;border-radius:0;scrollbar-width:thin}
+#color-dialog #color-page{position:relative;flex:none;align-self:auto;overflow:hidden;background:white;line-height:0;box-shadow:0 2px 8px #614d3930}
+#color-dialog #paint-canvas{display:block;width:100%;height:100%;max-width:none;max-height:none;touch-action:none;cursor:none;background:white}
+#color-page[data-tool=hand] #paint-canvas{cursor:grab}
+#color-page[data-tool=hand] #paint-canvas:active{cursor:grabbing}
+#color-inspiration{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:white}
+#paint-loading{position:absolute;inset:0;display:grid;place-items:center;padding:18px;line-height:1.5;background:#f5eddfe8;color:#7b667d;text-align:center;font-size:13px}
+#color-dialog .paint-cursor{position:absolute;transform:translate(-50%,-50%);border:1.5px solid #574661;border-radius:50%;background:color-mix(in srgb,var(--brush-color,#f28c28) 15%,transparent);box-shadow:0 0 0 1px #ffffffe0;pointer-events:none;z-index:2}
+#color-dialog .paint-cursor:before,#color-dialog .paint-cursor:after{display:none}
+#color-page[data-tool=flat] .paint-cursor{border-radius:2px;transform:translate(-50%,-50%) rotate(-45deg) scaleY(.3)}
+#color-page[data-tool=bucket] .paint-cursor{border-style:dashed;background:none}
+#color-dialog .paint-box{display:grid;grid-template-columns:96px minmax(0,1fr) 34px;align-items:center;gap:8px;flex:none;border:0;border-top:2px solid #c9ad87;background:linear-gradient(#f1e0c4,#e9d3b1);padding:5px 8px;overflow:hidden}
+.selected-paint{position:relative;display:flex;align-items:center;gap:5px;padding-bottom:12px;min-width:0;margin:0}
+#selected-swatch{display:block;width:25px;height:25px;flex:none;border-radius:8px;border:1px solid #654e4030;box-shadow:inset 0 2px 3px #fff6}
+#selected-color{display:block;font-size:10px;font-weight:650;line-height:1.2;max-width:61px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#selected-hex{display:block;font-size:8px;line-height:1.4;color:#897768}
+.selected-paint small{position:absolute;bottom:0;left:0;font-size:9px;line-height:1.2;color:#88705e}
+#color-dialog .palette{display:grid;grid-auto-flow:column;grid-template-rows:repeat(2,28px);grid-auto-columns:28px;gap:5px;width:100%;height:auto;max-height:none;margin:0;padding:3px 4px 6px;align-self:auto;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;overscroll-behavior-x:contain}
+#color-dialog .palette button{display:block;width:28px;height:28px;min-width:28px;min-height:28px;max-height:none;aspect-ratio:1;border:1px solid #74543b40;border-radius:7px;padding:0;box-shadow:inset 0 2px 2px #fff6,0 2px 1px #97744725;position:relative}
+#color-dialog .palette button[aria-pressed=true]{outline:2px solid #604864;outline-offset:1px;z-index:1}
+#color-dialog .palette button[aria-pressed=true]:after{content:'✓';font:700 14px/1 'Segoe UI',sans-serif;color:var(--check,#fff);text-shadow:0 1px 1px #0002}
+#color-dialog .palette button:hover{transform:none}
+.custom-paint{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;font-weight:650;color:#816747;border:0;padding:0}
+#custom-paint{width:32px;height:28px;border:1px solid #c3a47e;border-radius:6px;padding:2px;background:#fff5e0;cursor:pointer}
+#color-dialog .paint-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-start;flex:none;padding:5px 7px;margin:0;background:#f5e6cd;border-top:1px solid #ccb18d;min-height:42px}
+.tool-settings{display:flex;align-items:center;gap:5px;flex:none}
+.size-title{font-size:10px;font-weight:650;line-height:1.1;max-width:90px;min-width:38px;color:#816747}
+#size-name{display:block;font-size:8px;font-weight:400;line-height:1.2;margin-top:2px}
+.size-options{display:flex;gap:3px}
+#color-dialog .size-options button{display:flex;align-items:center;gap:3px;padding:3px 5px;min-height:28px;font-size:9px;border-radius:6px;white-space:nowrap}
+.size-options i{display:block;flex:none;width:var(--dot);height:var(--dot);background:#796780;border-radius:50%}
+#color-dialog .size-options button[aria-pressed=true]{background:#e1ebd3;border-color:#92a277;box-shadow:inset 0 0 0 1px #b5c39c}
+#brush-size{width:72px;margin:0 2px;accent-color:#75597d;cursor:pointer}
+.history-tools,.keep-tools,.zoom-tools{display:flex;align-items:center;gap:4px;flex:none}
+#color-dialog .paint-actions button{font-size:10px;padding:5px 7px;min-height:28px}
+#color-dialog .zoom-tools button{width:25px;padding:3px;font-size:12px}
+#color-dialog #zoom-fit{width:31px;font-size:10px}
+#zoom-label{font-size:9px;color:#8b776b;padding:0 2px}
+.action-spacer{flex:1}
+#color-dialog #download-paint{background:#67516e;color:#fff5e3;border-color:#5c4663}
+#color-dialog #show-inspiration[aria-pressed=true]{background:#67516e;color:white}
+.painting-status{display:flex;align-items:center;justify-content:space-between;gap:8px;flex:none;min-height:20px;max-height:36px;padding:3px 2px;overflow:auto}
+#color-dialog .paint-tip{margin:0;flex:1;color:#857583;font-size:10px;line-height:1.25;min-height:0}
+#painting-save{display:block;flex:none;font-size:9px;line-height:1.25;color:#708363;margin:0;max-width:150px;text-align:right}
+#color-dialog .picture-library{position:absolute;inset:7px 10px 22px;z-index:5;display:flex;flex-direction:column;padding:14px;border:2px solid #d5b995;border-radius:12px;background:#fff8e9;box-shadow:0 8px 20px #66503b44;min-height:0;overflow:hidden}
+.picture-library>header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#color-dialog .picture-library h3{margin:0;font:700 18px/1.2 'Segoe UI',sans-serif}
+.picture-library header p{font-size:11px;color:#8d7b83;margin:4px 0}
+#color-dialog #close-library{font-size:21px;padding:2px;width:32px;height:32px}
+.picture-filters{display:flex;gap:7px;flex:none;margin:10px 0}
+#color-dialog .picture-filters button{display:flex;gap:9px;font-size:12px}
+#color-dialog .picture-filters button[aria-pressed=true]{background:#67516e;color:#fff5e3;border-color:#5c4663}
+.picture-filters span{opacity:.7}
+.picture-buttons{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));grid-auto-rows:max-content;gap:10px;align-content:start;min-height:0;flex:1;overflow:auto;padding:4px;scrollbar-width:thin;overscroll-behavior:contain}
+#color-dialog .picture-card{position:relative;padding:4px;min-height:0;text-align:left}
+.picture-card img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;border-radius:6px;background:white}
+.picture-card span{display:block;font-size:11px;line-height:1.3;padding:5px 3px}
+#color-dialog .picture-card[aria-pressed=true]{border:2px solid #af855e;background:#f5e0bf;padding:3px}
+.paint-help{font-size:10px;line-height:1.4;color:#897780;margin:9px 0 0}
+@media(max-width:900px){#brush-size{display:none}#color-dialog .paint-actions{gap:5px}.tool-settings{gap:3px}#color-dialog .paint-actions button{padding:4px 5px}#zoom-label{display:none}}
+@media(max-width:600px){
+ #color-dialog{width:100vw;height:100dvh;max-height:100dvh;border-radius:8px;border-width:1px}
+ #color-dialog .dialog-heading{padding:7px 10px;gap:8px}
+ #color-dialog h2{font-size:18px}
+ #color-dialog .dialog-heading .eyebrow{font-size:7px;letter-spacing:1px}
+ #color-dialog #library-toggle{padding:7px 8px;font-size:11px}
+ #color-dialog .studio-header-actions>[data-close]{width:31px;height:31px;min-height:31px;font-size:21px}
+ #color-dialog .painting-desk{padding:5px 5px 2px}
+ #color-dialog .drawing-title-wrap .eyebrow{display:none}
+ #color-dialog .drawing-title-wrap h3{font-size:12px}
+ #color-dialog .drawing-nav{min-height:27px;margin-bottom:4px}
+ #color-dialog .page-arrows button{width:26px;min-height:25px;padding:2px}
+ .page-arrows{gap:4px}
+ #page-number{font-size:9px}
+ .paint-frame{border-width:2px;border-radius:9px}
+ .brush-tools{grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;padding:4px}
+ #color-dialog .brush-tools button{flex-direction:column;gap:1px;min-height:43px;padding:3px 2px;font-size:9px}
+ .brush-tools svg{width:20px;height:20px}
+ #color-dialog .paint-viewport{padding:2px;min-height:100px}
+ #color-dialog .paint-box{grid-template-columns:75px minmax(0,1fr) 29px;gap:5px;padding:4px 5px}
+ #selected-swatch{width:21px;height:23px;border-radius:6px}
+ .selected-paint{gap:3px}
+ #selected-color{font-size:9px;max-width:47px}
+ #selected-hex{font-size:7px}
+ .selected-paint small{font-size:8px}
+ #custom-paint{width:28px;height:28px}
+ #color-dialog .palette{grid-template-rows:repeat(2,28px);grid-auto-columns:28px;gap:4px;padding:3px 3px 5px}
+ #color-dialog .paint-actions{padding:4px;gap:4px}
+ .tool-settings{flex-basis:100%;justify-content:center;border-bottom:1px solid #d9bf9a;padding-bottom:4px}
+ .size-title{min-width:40px;max-width:100px}
+ #color-dialog .size-options button{padding:3px 5px;font-size:9px}
+ .size-options i{max-width:15px;max-height:15px}
+ #color-dialog .history-tools button,#color-dialog .keep-tools button{font-size:9px;padding:4px}
+ #color-dialog .zoom-tools button{width:22px;font-size:11px}
+ #color-dialog #zoom-fit{width:27px}
+ .history-tools,.zoom-tools,.keep-tools{gap:3px}
+ .action-spacer{display:none}
+ #color-dialog .paint-actions>#show-inspiration{font-size:9px;order:5}
+ .keep-tools{margin-left:auto}
+ #color-dialog .paint-tip{font-size:9px}
+ #painting-save{font-size:8px;max-width:90px}
+ #color-dialog .picture-library{inset:5px 5px 20px;padding:10px}
+ .picture-buttons{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .picture-card span{font-size:10px}
+}
+@media(max-height:480px){#color-dialog .dialog-heading .eyebrow{display:none}#color-dialog .dialog-heading{padding:5px 10px}#color-dialog h2{font-size:17px}#color-dialog .drawing-nav{min-height:24px;margin-bottom:3px}.brush-tools{padding-block:3px}#color-dialog .brush-tools button{min-height:30px}.brush-tools svg{height:18px;width:18px}#color-dialog .palette{grid-template-rows:repeat(1,28px)}.selected-paint{padding-bottom:0}.selected-paint small{display:none}.painting-status{min-height:16px}.tool-settings{flex-basis:auto;border:0;padding:0}.size-options i{display:none}}
+@media(prefers-reduced-motion:reduce){#color-dialog button{transition:none}}
+@media print{
+ @page{size:landscape;margin:8mm}
+ html,body{margin:0!important;padding:0!important;background:white!important;height:auto!important;overflow:visible!important}
+ body>main,body>dialog:not(#color-dialog){display:none!important}
+ #color-dialog,#color-dialog[open]{position:static!important;display:block!important;width:100%!important;height:auto!important;max-height:none!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:white!important;overflow:visible!important}
+ #color-dialog::backdrop{display:none}
+ #color-dialog .dialog-heading,.drawing-nav,.brush-tools,.paint-box,.paint-actions,.painting-status,.picture-library,#paint-loading,.paint-cursor,#color-inspiration{display:none!important}
+ #color-dialog .studio-workspace,#color-dialog .painting-desk,#color-dialog .paint-frame,#color-dialog .paint-viewport{display:block!important;position:static!important;border:0!important;background:white!important;padding:0!important;margin:0!important;width:100%!important;height:auto!important;max-height:none!important;overflow:visible!important;box-shadow:none!important}
+ #color-dialog #color-page{width:100%!important;height:auto!important;box-shadow:none!important}
+ #color-dialog #paint-canvas{display:block!important;width:100%!important;height:auto!important;max-height:none!important}
+}
+
+/* The sheet fits the full available width. Tall sheets scroll naturally rather
+   than being reduced to the viewport height. Controls remain secondary. */
+@media screen{
+ #color-dialog{color-scheme:dark;width:calc(100vw - 12px);height:calc(100dvh - 12px);max-height:none;border:1px solid #927147;border-radius:13px;}
+ #color-dialog::backdrop{backdrop-filter:blur(5px)}
+ #color-dialog button{min-height:38px;font-size:12px;cursor:pointer;}
+ #color-dialog button:hover:not(:disabled){}
+ #color-dialog button:disabled{opacity:.5;cursor:default}
+ #color-dialog button:focus-visible,#color-dialog input:focus-visible,#paint-canvas:focus-visible{outline:3px solid #ffcf76;outline-offset:2px}
+ #color-dialog .dialog-heading{padding:7px 11px;gap:8px}
+ #color-dialog .eyebrow{font-size:9px;letter-spacing:1.2px}
+ #color-dialog h2{font:600 22px/1.1 'Palatino Linotype',Georgia,serif;letter-spacing:0;}
+ #color-dialog .studio-header-actions>[data-close]{width:42px;height:42px}
+ #color-dialog #library-toggle{font-size:12px;padding:7px 10px}
+ #color-dialog #library-toggle span{}
+ #color-dialog .painting-desk{padding:6px 7px 3px}
+ #color-dialog .drawing-nav{min-height:36px;margin-bottom:5px}
+ #color-dialog .drawing-title-wrap h3{font:600 15px/1.3 'Palatino Linotype',Georgia,serif;letter-spacing:0;}
+ #color-dialog .page-arrows button{width:38px;min-height:38px}
+ #color-dialog #page-number{font-size:11px}
+ #color-dialog .paint-frame{border:2px solid #7c6549;border-radius:10px;}
+ #color-dialog .brush-tools{padding:4px 7px;gap:5px;grid-template-columns:repeat(6,minmax(0,96px))}
+ #color-dialog .brush-tools button{min-height:42px;font-size:12px;}
+ #color-dialog .brush-tools button[aria-pressed=true]{}
+ #color-dialog .paint-viewport{align-items:flex-start;justify-content:flex-start;min-height:160px;padding:3px;scrollbar-scrollbar-width:auto}
+ #color-dialog #color-page{align-self:flex-start;flex-shrink:0;}
+ #color-dialog #paint-canvas{max-width:none;max-height:none}
+ #color-dialog #color-inspiration{pointer-events:none}
+ #color-dialog #paint-loading{font-size:15px}
+ #color-dialog .paint-box{grid-template-columns:100px minmax(0,1fr) 42px;gap:7px;padding:4px 7px;}
+ #color-dialog .selected-paint{padding-bottom:12px}
+ #color-dialog #selected-color{font-size:11px;max-width:68px;}
+ #color-dialog #selected-hex,#color-dialog .selected-paint small{}
+ #color-dialog #selected-swatch{width:30px;height:30px;}
+ #color-dialog .palette{grid-template-rows:44px;grid-auto-columns:44px;gap:5px;padding:3px 4px 8px;scrollbar-scrollbar-width:thin}
+ #color-dialog .palette button{width:44px;height:44px;min-width:44px;min-height:44px;border:1px solid #d8c5a970;}
+ #color-dialog .palette button[aria-pressed=true]{outline:2px solid #fce1a5;outline-offset:1px}
+ #color-dialog .palette button[aria-pressed=true]:after{font-size:20px}
+ #color-dialog .custom-paint{font-size:10px;}
+ #color-dialog #custom-paint{width:40px;height:38px;padding:2px;}
+ #color-dialog .paint-actions{padding:4px 6px;gap:5px;min-height:42px}
+ #color-dialog .paint-actions button{min-height:36px;font-size:11px;padding:5px 7px}
+ #color-dialog .size-title{font-size:11px}
+ #color-dialog #size-name{font-size:9px;}
+ #color-dialog .size-options button{min-height:34px;font-size:10px}
+ #color-dialog .size-options button[aria-pressed=true]{}
+ #color-dialog .size-options i{}
+ #color-dialog #brush-size{accent-}
+ #color-dialog .zoom-tools button{width:30px;font-size:13px}
+ #color-dialog #zoom-fit{width:34px;font-size:11px}
+ #color-dialog #zoom-label{font-size:10px;}
+ #color-dialog #download-paint{}
+ #color-dialog #show-inspiration[aria-pressed=true]{}
+ #color-dialog #show-inspiration.example-glow:not(:disabled){animation:example-candle 1.8s ease-in-out infinite}
+ #color-dialog .painting-status{min-height:25px;max-height:38px;padding:3px 2px}
+ #color-dialog .paint-tip{font-size:11px;}
+ #color-dialog #painting-save{font-size:10px;}
+ #color-dialog .picture-library{inset:5px 7px 26px;padding:12px;}
+ #color-dialog .picture-library h3{font:600 22px/1.2 'Palatino Linotype',Georgia,serif;}
+ #color-dialog .picture-library header p,#color-dialog .paint-help{font-size:12px}
+ #color-dialog #close-library{width:42px;height:42px}
+ #color-dialog .picture-filters button[aria-pressed=true]{}
+ #color-dialog .picture-card{}
+ #color-dialog .picture-card[aria-pressed=true]{}
+ #color-dialog .picture-card span{font-size:13px}
+ @keyframes example-candle{0%,100%{}50%{}}
+}
+@media screen and (max-width:620px){#color-dialog .eyebrow{font-size:8px}#color-dialog h2{font-size:20px}#color-dialog .drawing-title-wrap .eyebrow{display:none}#color-dialog .brush-tools button{padding:3px;font-size:11px;gap:3px}#color-dialog .brush-tools svg{width:19px;height:19px}#color-dialog .paint-box{grid-template-columns:74px minmax(0,1fr) 40px}#color-dialog #selected-hex{display:none}#color-dialog .size-options button span{display:none}#color-dialog #brush-size{width:60px}#color-dialog .paint-actions{gap:4px}#color-dialog .painting-status #painting-save{max-width:92px}#color-dialog .paint-viewport{min-height:130px}}
+@media screen and (max-height:560px){#color-dialog .dialog-heading{padding:3px 8px}#color-dialog .drawing-nav{min-height:28px;margin-bottom:3px}#color-dialog .paint-tip{font-size:10px}#color-dialog .paint-viewport{min-height:90px}}
+@media (prefers-reduced-motion:reduce){#color-dialog *,#color-dialog #show-inspiration.example-glow{animation:none!important;transition:none!important}}
